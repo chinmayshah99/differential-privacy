@@ -56,43 +56,46 @@ elseif(UNIX)
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--build-id")
 endif()
 
-enable_testing()
+# enable_testing()
 
-add_library(percentile INTERFACE percentile.h)
-target_link_libraries(
-  /differential_privacy/proto:util-lib
-  com_google_protobuf//:protobuf_lite)
-add_library(logging
+add_library(percentile INTERFACE)
+target_sources(percentile INTERFACE percentile.h)
+target_link_libraries(percentile INTERFACE
+  util-lib
+  protobuf_lite)
+
+add_library(logging STATIC
   logging.cc
   logging.h)
 target_link_libraries(logging
-  com_google_absl//absl/base
-  com_google_absl//absl/base:core_headers
-  com_google_absl//absl/base:log_severity)
+  base
+  base:core_headers
+  base:log_severity)
 
 add_library(statusor_internals INTERFACE)
-target_link_libraries(statusor_internals INTERFACE
-  status
-  com_google_absl//absl/base:core_headers
-  com_google_absl//absl/meta:type_traits)
+target_sources(statusor_internals INTERFACE statusor_internals.h)
+target_link_libraries(statusor_internals 
+  INTERFACE status
+  base:core_headers
+  meta:type_traits)
 
-add_library(status
+add_library(status STATIC
   status.cc
   status.h
   status_macros.h)
 target_link_libraries(status
-  com_google_absl//absl/base:core_headers
-  com_google_absl//absl/container:node_hash_map
-  com_google_absl//absl/strings
-  com_google_absl//absl/types:optional)
-add_library(canonical_errors
+  base:core_headers
+  container:node_hash_map
+  strings
+  types:optional)
+add_library(canonical_errors STATIC
   canonical_errors.cc
   canonical_errors.h)
 target_link_libraries(canonical_errors
   status
-  com_google_absl//absl/base:core_headers
-  com_google_absl//absl/strings)
-add_library(statusor
+  base:core_headers
+  strings)
+add_library(statusor STATIC
   statusor.cc
   statusor.h)
 target_link_libraries(statusor
@@ -100,6 +103,4 @@ target_link_libraries(statusor
   logging
   status
   statusor_internals
-  com_google_absl//absl/base:core_headers)
-
-
+  base:core_headers)

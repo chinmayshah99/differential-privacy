@@ -1,23 +1,15 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.3)
+find_package(Protobuf REQUIRED)
 
 
-#TODO
-# proto_library cc_proto_library can you do this?
-
-add_library(data-proto
-data.proto)
-
-add_library(data_cc_proto)
-target_link_libraries(data-proto)
+PROTOBUF_GENERATE_CPP(data_cc_proto data-proto data.proto)
+target_link_libraries(confidence-interval_proto)
 
 
-add_library(summary-proto summary.proto)
+
+PROTOBUF_GENERATE_CPP(summary_cc_proto summary-proto summary.proto)
 target_link_libraries(data-proto 
-"@com_google_protobuf//:any_proto") #TODO
+any_proto) #TODO
 
-add_library(summary_cc_proto)
-target_link_libraries(summary-proto)
-
-add_library(util-lib util.h)
+add_library(util-lib STATIC util.h)
 target_link_libraries(data_cc_proto)
-
