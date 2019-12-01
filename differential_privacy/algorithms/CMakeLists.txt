@@ -56,7 +56,7 @@ elseif(UNIX)
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--build-id")
 endif()
 
-# find_package(Protobuf REQUIRED)
+find_package(Protobuf REQUIRED)
 protobuf_generate_cpp(confidence_interval_cc_proto confidence-interval_proto confidence-interval.proto)
 
 add_library(algorithm INTERFACE)
