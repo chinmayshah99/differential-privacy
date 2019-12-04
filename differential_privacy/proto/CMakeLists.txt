@@ -3,13 +3,12 @@ find_package(Protobuf REQUIRED)
 
 
 PROTOBUF_GENERATE_CPP(data_cc_proto data-proto data.proto)
-target_link_libraries(confidence-interval_proto)
-
-
+add_library(data_cc_proto_lib ${data_cc_proto} ${data-proto})
 
 PROTOBUF_GENERATE_CPP(summary_cc_proto summary-proto summary.proto)
-target_link_libraries(data-proto 
-any_proto) #TODO
+target_link_libraries(data_cc_proto_lib any_proto)
 
 add_library(util-lib STATIC util.h)
-target_link_libraries(data_cc_proto)
+target_link_libraries(util-lib 
+data_cc_proto_lib 
+confidence_interval_cc_proto_lib)

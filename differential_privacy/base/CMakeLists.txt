@@ -58,9 +58,8 @@ endif()
 
 # enable_testing()
 
-add_library(percentile INTERFACE)
-target_sources(percentile INTERFACE percentile.h)
-target_link_libraries(percentile INTERFACE
+add_library(percentile STATIC percentile.h)
+target_link_libraries(percentile
   util-lib
   protobuf_lite)
 
@@ -72,10 +71,9 @@ target_link_libraries(logging
   base:core_headers
   base:log_severity)
 
-add_library(statusor_internals INTERFACE)
-target_sources(statusor_internals INTERFACE statusor_internals.h)
+add_library(statusor_internals STATIC statusor_internals.h)
 target_link_libraries(statusor_internals 
-  INTERFACE status
+  status
   base:core_headers
   meta:type_traits)
 
@@ -88,6 +86,7 @@ target_link_libraries(status
   container:node_hash_map
   strings
   types:optional)
+
 add_library(canonical_errors STATIC
   canonical_errors.cc
   canonical_errors.h)
@@ -95,6 +94,7 @@ target_link_libraries(canonical_errors
   status
   base:core_headers
   strings)
+
 add_library(statusor STATIC
   statusor.cc
   statusor.h)

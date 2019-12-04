@@ -58,10 +58,10 @@ endif()
 
 find_package(Protobuf REQUIRED)
 protobuf_generate_cpp(confidence_interval_cc_proto confidence-interval_proto confidence-interval.proto)
+add_library(confidence_interval_cc_proto_lib ${confidence_interval_cc_proto} ${confidence-interval_proto})
 
-add_library(algorithm INTERFACE)
-target_sources(algorithm INTERFACE algorithm.h)
-target_link_libraries(algorithm INTERFACE 
+add_library(algorithm STATIC algorithm.h)
+target_link_libraries(algorithm 
   confidence_interval_cc_proto
   numerical-mechanisms
   util
@@ -72,9 +72,8 @@ target_link_libraries(algorithm INTERFACE
   util-lib
   memory)
 
-add_library(binary-search INTERFACE)
-target_sources(binary-search INTERFACE binary-search.h)
-target_link_libraries(binary-search INTERFACE 
+add_library(binary-search STATIC binary-search.h)
+target_link_libraries(binary-search 
   algorithm
   numerical-mechanisms
   percentile
@@ -82,24 +81,21 @@ target_link_libraries(binary-search INTERFACE
   util-lib
   cc_wkt_protos)
 
-add_library(bounded-algorithm INTERFACE)
-target_sources(bounded-algorithm INTERFACE bounded-algorithm.h)
-target_link_libraries(bounded-algorithm INTERFACE 
+add_library(bounded-algorithm STATIC bounded-algorithm.h)
+target_link_libraries(bounded-algorithm 
   algorithm
   approx-bounds
   status)
 
-add_library(order-statistics INTERFACE)
-target_sources(order-statistics INTERFACE order-statistics.h)
-target_link_libraries(order-statistics INTERFACE 
+add_library(order-statistics STATIC order-statistics.h)
+target_link_libraries(order-statistics 
   binary-search
   bounded-algorithm
   percentile
   status)
 
-add_library(bounded-sum INTERFACE)
-target_sources(bounded-sum INTERFACE bounded-sum.h)
-target_link_libraries(bounded-sum INTERFACE 
+add_library(bounded-sum STATIC bounded-sum.h)
+target_link_libraries(bounded-sum 
   algorithm
   bounded-algorithm
   numerical-mechanisms
@@ -108,10 +104,8 @@ target_link_libraries(bounded-sum INTERFACE
   memory
   cc_wkt_protos)
 
-add_library(bounded-mean INTERFACE)
-target_sources(bounded-mean INTERFACE bounded-mean.h)
+add_library(bounded-mean STATIC bounded-mean.h)
 target_link_libraries(bounded-mean
-  INTERFACE 
   algorithm
   bounded-algorithm
   numerical-mechanisms
@@ -120,9 +114,8 @@ target_link_libraries(bounded-mean
   distributions
   cc_wkt_protos)
 
-add_library(bounded-variance INTERFACE)
-target_sources(bounded-variance INTERFACE bounded-variance.h)
-target_link_libraries(bounded-variance INTERFACE 
+add_library(bounded-variance STATIC bounded-variance.h)
+target_link_libraries(bounded-variance 
   algorithm
   approx-bounds
   bounded-algorithm
@@ -131,20 +124,16 @@ target_link_libraries(bounded-variance INTERFACE
   memory
   cc_wkt_protos)
 
-add_library(bounded-standard-deviation INTERFACE)
-target_sources(bounded-standard-deviation INTERFACE bounded-standard-deviation.h)
+add_library(bounded-standard-deviation STATIC bounded-standard-deviation.h)
 target_link_libraries(bounded-standard-deviation
-  INTERFACE 
   algorithm
   bounded-algorithm
   bounded-variance
   numerical-mechanisms
   memory)
 
-add_library(count INTERFACE)
-target_sources(count INTERFACE count.h)
+add_library(count STATIC count.h)
 target_link_libraries(count
-  INTERFACE 
   algorithm
   numerical-mechanisms
   summary_cc_proto
@@ -154,7 +143,7 @@ add_library(util STATIC
   util.cc
   util.h)
 target_link_libraries(util
-  logging
+  INTERFACE logging
   status
   statusor
   strings)
@@ -163,17 +152,16 @@ add_library(distributions STATIC
   distributions.cc
   distributions.h)
 target_link_libraries(distributions
-  rand
+  INTERFACE rand
   util
   statusor
   memory
   random
   strings)
 
-add_library(numerical-mechanisms INTERFACE)
-target_sources(numerical-mechanisms INTERFACE numerical-mechanisms.h)
+add_library(numerical-mechanisms STATIC numerical-mechanisms.h)
 target_link_libraries(numerical-mechanisms
-  INTERFACE confidence_interval_cc_proto
+  confidence_interval_cc_proto
   distributions
   util
   status)
@@ -187,10 +175,9 @@ target_link_libraries(numerical-mechanisms
 #  com_google_googletest//:gtest
 #  /differential_privacy/base:statusor)
 
-add_library(approx-bounds INTERFACE)
-target_sources(approx-bounds INTERFACE approx-bounds.h)
+add_library(approx-bounds STATIC approx-bounds.h)
 target_link_libraries(approx-bounds
-  INTERFACE algorithm
+  algorithm
   status
   util-lib
   cc_wkt_protos)
@@ -202,4 +189,3 @@ target_link_libraries(rand
   logging
   boringssl:crypto
   synchronization)
-
