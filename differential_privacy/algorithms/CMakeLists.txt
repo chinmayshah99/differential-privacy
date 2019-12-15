@@ -58,7 +58,7 @@ endif()
 
 find_package(Protobuf REQUIRED)
 protobuf_generate_cpp(confidence_interval_cc_proto confidence-interval_proto confidence-interval.proto)
-add_library(confidence_interval_cc_proto_lib ${confidence_interval_cc_proto} ${confidence-interval_proto})
+add_library(confidence_interval_cc_proto_lib SHARED ${confidence_interval_cc_proto} ${confidence-interval_proto})
 
 add_library(algorithm STATIC algorithm.h)
 target_link_libraries(algorithm 

@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 
-#include "differential_privacy/base/status.h"
+#include "status.h"
 
 #include "absl/strings/str_cat.h"
 #include "absl/types/optional.h"

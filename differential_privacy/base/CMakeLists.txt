@@ -62,6 +62,7 @@ add_library(percentile STATIC percentile.h)
 target_link_libraries(percentile
   util-lib
   protobuf_lite)
+set_target_properties(percentile PROPERTIES LINKER_LANGUAGE CXX)
 
 add_library(logging STATIC
   logging.cc
